@@ -1,0 +1,5 @@
+FROM alpine
+
+WORKDIR /acestream
+COPY dist /acestream
+CMD ["/acestream/start_acestream_chroot.sh"]

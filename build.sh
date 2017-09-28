@@ -2,6 +2,11 @@
 
 # Written by Vasiliy Solovey, 2016
 
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 <arm|x86>"
+  exit 1
+fi
+
 ARCH=$1
 if [ "$ARCH" == "arm" ]; then
   ARCH="armv7"
@@ -62,9 +67,14 @@ mkdir $DIST_DIR/androidfs
 cp -r chroot/* $DIST_DIR/androidfs/
 cp -r -f platform/$1/* $DIST_DIR/androidfs/
 cp scripts/start_acestream.sh $DIST_DIR/
+cp scripts/start_acestream_chroot.sh $DIST_DIR/
 cp scripts/stop_acestream.sh $DIST_DIR/
 cp scripts/acestream-user.conf $DIST_DIR/
 cp scripts/acestream.sh $DIST_DIR/androidfs/system/bin/
 mv $BUILD_DIR/acestream_engine/* $DIST_DIR/androidfs/data/data/org.acestream.media/files/
 
-echo "Done!"
+echo "Building docker image..."
+docker build -t huangw5/cheapstream -t huangw5/cheapstream:$(date +%Y%m%d%H%M%S) . -f Dockerfile.${ARCH}
+
+echo "Done! To start the engine, run:"
+echo "  docker run --privileged -it --rm -p 6878:6878 huangw5/cheapstream"
