@@ -8,6 +8,9 @@ if [ $# -ne 1 ]; then
 fi
 
 ARCH=$1
+TAG=$ARCH
+DOCKERFILE=Dockerfile.${TAG}
+
 if [ "$ARCH" == "arm" ]; then
   ARCH="armv7"
 fi
@@ -29,8 +32,6 @@ rm -r $DIST_DIR
 
 mkdir $BUILD_DIR
 cd $BUILD_DIR
-
-pwd
 
 echo "Downloading latest AceStream engine for Android..."
 wget $LATEST_ANDROID_ENGINE_URI -O acestream.apk
@@ -74,7 +75,10 @@ cp scripts/acestream.sh $DIST_DIR/androidfs/system/bin/
 mv $BUILD_DIR/acestream_engine/* $DIST_DIR/androidfs/data/data/org.acestream.media/files/
 
 echo "Building docker image..."
-docker build -t huangw5/cheapstream -t huangw5/cheapstream:$(date +%Y%m%d%H%M%S) . -f Dockerfile.${ARCH}
+docker build -t huangw5/cheapstream \
+  -t huangw5/cheapstream:$(date +%Y%m%d%H%M%S) \
+  -t huangw5/cheapstream:${TAG} \
+  . -f ${DOCKERFILE}
 
 echo "Done! To start the engine, run:"
 echo "  docker run --privileged -it --rm -p 6878:6878 huangw5/cheapstream"
