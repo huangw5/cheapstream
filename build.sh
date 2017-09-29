@@ -67,6 +67,7 @@ mkdir $DIST_DIR
 mkdir $DIST_DIR/androidfs
 cp -r chroot/* $DIST_DIR/androidfs/
 cp -r -f platform/$1/* $DIST_DIR/androidfs/
+cp scripts/client.py $DIST_DIR/
 cp scripts/start_acestream.sh $DIST_DIR/
 cp scripts/start_acestream_chroot.sh $DIST_DIR/
 cp scripts/stop_acestream.sh $DIST_DIR/
