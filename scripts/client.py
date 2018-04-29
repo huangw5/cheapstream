@@ -7,6 +7,7 @@ import sys
 import time
 import urllib2
 
+stream_path = "/home/huangwe/USB_Storage/ace.strm"
 
 class AceError(Exception):
   pass
@@ -90,6 +91,11 @@ def main(argv):
     return
   res = data["response"]
   print "playback_url: %s" % res["playback_url"]
+
+  # Write the url to a file.
+  with open(stream_path, "w") as f:
+      f.write(res["playback_url"])
+
   play_cmd = [argv[3], res["playback_url"]] if len(argv) == 4 else None
   try:
       poll_stat(res["stat_url"], play_cmd)
