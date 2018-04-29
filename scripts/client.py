@@ -6,7 +6,9 @@ import subprocess
 import sys
 import time
 import urllib2
+from os.path import expanduser
 
+stream_path = "%s/USB_Storage/ace.strm" % expanduser("~")
 
 class AceError(Exception):
   pass
@@ -89,7 +91,12 @@ def main(argv):
     logging.error("Error in get_stream: %s", data["error"])
     return
   res = data["response"]
-  print "playback_url: %s" % res["playback_url"]
+  # Write the url to a file.
+  with open(stream_path, "w") as f:
+      f.write(res["playback_url"])
+  print "Wrote playback_url: %s" % res["playback_url"]
+  print "To: %s" % stream_path
+
   play_cmd = [argv[3], res["playback_url"]] if len(argv) == 4 else None
   try:
       poll_stat(res["stat_url"], play_cmd)
