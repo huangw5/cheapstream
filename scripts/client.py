@@ -8,7 +8,7 @@ import time
 import urllib2
 from os.path import expanduser
 
-stream_path = "%s/USB_Storage/ace.strm" % expanduser("~")
+stream_path = "%s/ace.strm" % expanduser("~")
 
 class AceError(Exception):
   pass
