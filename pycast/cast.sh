@@ -5,4 +5,8 @@ if [ $# -ne 2 ]; then
   exit 1
 fi
 
-docker run --rm -it --network host -e URL="$1" -e DEVICE="$2" huangw5/pycast
+URL="$1"
+DEVICE="$2"
+
+set -x
+docker run --rm -it --network host -e URL="$URL" -e DEVICE="$DEVICE" huangw5/pycast

@@ -7,4 +7,4 @@ RUN apk update && \
 
 WORKDIR /pycast
 COPY cast.py /pycast/
-CMD ["sh", "-c", "python /pycast/cast.py ${URL} \"${DEVICE}\" ${TYPE}"]
+CMD ["sh", "-c", "python /pycast/cast.py \"${URL}\" \"${DEVICE}\" ${TYPE}"]
