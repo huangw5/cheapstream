@@ -8,7 +8,7 @@ import time
 import urllib2
 from os.path import expanduser
 
-stream_path = "%s/ace.strm" % expanduser("~")
+stream_path = "%s/NAS/ace.strm" % expanduser("~")
 
 class AceError(Exception):
   pass
@@ -80,7 +80,7 @@ def stop_stream(command_url):
     data = json.load(resp)
     if data["error"] is not None:
       raise AceError(data["error"])
-    print "\nStop successfully: %s" % data["response"]
+    print("\nStop successfully: %s" % data["response"])
   except Exception as e:
     raise AceError(e)
 
@@ -91,11 +91,14 @@ def main(argv):
     logging.error("Error in get_stream: %s", data["error"])
     return
   res = data["response"]
+  print("playback_url: %s" % res["playback_url"])
   # Write the url to a file.
   with open(stream_path, "w") as f:
+    try:
       f.write(res["playback_url"])
-  print "Wrote playback_url: %s" % res["playback_url"]
-  print "To: %s" % stream_path
+      print("Wrote to: %s" % stream_path)
+    except:
+      pass
 
   play_cmd = [argv[3], res["playback_url"]] if len(argv) == 4 else None
   try:
@@ -106,7 +109,7 @@ def main(argv):
 
 if __name__ == "__main__":
   if len(sys.argv) < 3 or len(sys.argv) > 4:
-    print "Usage: %s <host:port> <content_id> [cmd]" % sys.argv[0]
+    print("Usage: %s <host:port> <content_id> [cmd]" % sys.argv[0])
     sys.exit()
 
   main(sys.argv)
